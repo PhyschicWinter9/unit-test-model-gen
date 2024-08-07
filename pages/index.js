@@ -151,7 +151,7 @@ void main() {
               JSON Input
             </label>
             <textarea
-              className="w-full h-32 p-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+              className="w-full h-32 p-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:text-white text-white"
               id="jsonInput"
               value={jsonInput}
               onChange={handleJsonChange}
@@ -166,7 +166,7 @@ void main() {
               Model Class Code
             </label>
             <textarea
-              className="w-full h-48 p-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+              className="w-full h-48 p-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 text-white dark:text-white"
               id="modelClassInput"
               value={modelClassInput}
               onChange={handleModelClassChange}
@@ -174,7 +174,7 @@ void main() {
             />
           </div>
           <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 focus:outline-none"
+            className="bg-blue-600 text-white  px-4 py-2 rounded-md shadow hover:bg-blue-700 focus:outline-none"
             onClick={generateUnitTests}
           >
             Generate Unit Tests
