@@ -53,6 +53,8 @@ const Home = () => {
 
     // Generate unit test code
     const testCode = `
+import 'package:flutter_test/flutter_test.dart';
+
 void main() {
   final res = ${JSON.stringify(jsonData, null, 2)};
 
@@ -61,12 +63,14 @@ void main() {
       final json2model = ${className}.fromJson(res);
 
       ${Object.entries(jsonData)
-        .map(
-          ([key, value]) =>
-            `expect(json2model.${key}, ${
-              typeof value === 'string' ? `"${value}"` : value
-            });`
-        )
+        .map(([key, value]) => {
+          if (Array.isArray(value)) {
+            return `expect(json2model.${key}, ${JSON.stringify(value)});`;
+          }
+          return `expect(json2model.${key}, ${
+            typeof value === 'string' ? `"${value}"` : value
+          });`;
+        })
         .join('\n')}
     });
 
@@ -75,12 +79,14 @@ void main() {
       final jsonMap = model2Json.toJson();
 
       ${Object.entries(jsonData)
-        .map(
-          ([key, value]) =>
-            `expect(jsonMap["${key}"], ${
-              typeof value === 'string' ? `"${value}"` : value
-            });`
-        )
+        .map(([key, value]) => {
+          if (Array.isArray(value)) {
+            return `expect(jsonMap["${key}"], ${JSON.stringify(value)});`;
+          }
+          return `expect(jsonMap["${key}"], ${
+            typeof value === 'string' ? `"${value}"` : value
+          });`;
+        })
         .join('\n')}
     });
 
@@ -89,14 +95,14 @@ void main() {
 
       expect(model.props, [
         ${Object.values(jsonData)
-          .map((value) => (typeof value === 'string' ? `"${value}"` : value))
+          .map((value) => (Array.isArray(value) ? JSON.stringify(value) : typeof value === 'string' ? `"${value}"` : value))
           .join(',\n')}
       ]);
     });
   });
 }
     `;
-    return testCode;
+    return formatDartCode(testCode);
   };
 
   const copyToClipboard = async () => {
@@ -108,9 +114,17 @@ void main() {
     }
   };
 
+  const formatDartCode = (code) => {
+    // A simple formatter for demonstration purposes
+    return code
+      .replace(/\s{2,}/g, ' ') // Replace multiple spaces with a single space
+      .replace(/\n\s*\n/g, '\n\n') // Replace empty lines with a single empty line
+      .trim(); // Remove leading/trailing spaces
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-500">
-      <header className=" dark:#475569 shadow py-4">
+      <header className="dark:bg-gray-800 shadow py-4">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <h1 className="text-2xl font-bold">
             Unit Test Model Pattern Generator
@@ -134,7 +148,7 @@ void main() {
               JSON Input
             </label>
             <textarea
-              className="w-full h-32 p-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:text-black"
+              className="w-full h-32 p-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
               id="jsonInput"
               value={jsonInput}
               onChange={handleJsonChange}
@@ -149,7 +163,7 @@ void main() {
               Model Class Code
             </label>
             <textarea
-              className="w-full h-48 p-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:text-black"
+              className="w-full h-48 p-3 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
               id="modelClassInput"
               value={modelClassInput}
               onChange={handleModelClassChange}
@@ -179,7 +193,7 @@ void main() {
           </div>
         )}
       </main>
-      <footer className="dark:#475569 shadow py-4">
+      <footer className="dark:bg-gray-800 shadow py-4">
         <div className="container mx-auto px-6 text-center">
           <p className="text-sm">
             &copy; CHAD-GPT All rights reserved.
