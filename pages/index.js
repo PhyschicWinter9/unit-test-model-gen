@@ -102,7 +102,7 @@ void main() {
   });
 }
     `;
-    return formatDartCode(testCode);
+    return testCode;
   };
 
   const copyToClipboard = async () => {
@@ -114,13 +114,7 @@ void main() {
     }
   };
 
-  const formatDartCode = (code) => {
-    // A simple formatter for demonstration purposes
-    return code
-      .replace(/\s{2,}/g, ' ') // Replace multiple spaces with a single space
-      .replace(/\n\s*\n/g, '\n\n') // Replace empty lines with a single empty line
-      .trim(); // Remove leading/trailing spaces
-  };
+
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-500">
@@ -129,6 +123,14 @@ void main() {
           <h1 className="text-2xl font-bold">
             Unit Test Model Pattern Generator
           </h1>
+          <div>
+          <button
+            className="bg-gray-200 dark:bg-gray-700 rounded-full p-2 focus:outline-none mr-2"
+            onClick={() => window.open('https://github.com/PhyschicWinter9/unit-test-model-gen')}
+            aria-label="Repository"
+          >
+            Github Repo
+          </button>
           <button
             className="bg-gray-200 dark:bg-gray-700 rounded-full p-2 focus:outline-none"
             onClick={toggleDarkMode}
@@ -136,6 +138,7 @@ void main() {
           >
             {isDarkMode ? '🌞' : '🌜'}
           </button>
+          </div>
         </div>
       </header>
       <main className="container mx-auto p-6 flex-grow">
